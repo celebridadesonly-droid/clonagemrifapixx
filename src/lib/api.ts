@@ -76,23 +76,26 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 // APIs de Autenticação
 export const authAPI = {
   login: async (credentials: LoginCredentials): Promise<AuthResponse> => {
-    try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(credentials),
-      })
-
-      const data = await response.json()
-      return data
-    } catch (error) {
-      console.error('Erro na autenticação:', error)
+    await delay(1500)
+    
+    // Simulação de autenticação
+    if (credentials.email === 'admin@raspadinha.com' && credentials.password === 'admin123') {
       return {
-        success: false,
-        error: 'Erro de conexão com o servidor'
+        success: true,
+        user: {
+          id: 1,
+          email: credentials.email,
+          name: 'Administrador',
+          role: 'superadmin',
+          permissions: ['all']
+        },
+        token: 'mock_token_' + Date.now()
       }
+    }
+    
+    return {
+      success: false,
+      error: 'Email ou senha incorretos'
     }
   },
 
